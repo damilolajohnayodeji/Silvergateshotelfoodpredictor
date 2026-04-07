@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Silvergates Hotel & Suites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* ══════════════════════════════════════
+   CSS VARIABLES & RESET
+══════════════════════════════════════ */
+:root {
+  --sky: #D9F1FF;
+  --ocean: #0EA5E9;
+  --navy: #0F172A;
+  --cream: #FFF8E7;
+  --gold: #E6C068;
+  --grey: #F1F5F9;
+  --glass-bg: rgba(255,255,255,0.55);
+  --glass-border: rgba(255,255,255,0.75);
+  --shadow: 0 8px 40px rgba(14,165,233,0.10);
+  --shadow-md: 0 12px 48px rgba(15,23,42,0.13);
+  --radius: 18px;
+  --radius-sm: 10px;
+  --radius-lg: 28px;
+  --transition: 0.38s cubic-bezier(0.4,0,0.2,1);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'DM Sans', sans-serif;
+  --bg-grad: linear-gradient(135deg, #D9F1FF 0%, #F1F5F9 50%, #FFF8E7 100%);
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --card-bg: rgba(255,255,255,0.58);
+  --border: rgba(14,165,233,0.15);
+  --input-bg: rgba(255,255,255,0.75);
+}
+
+[data-theme="dark"] {
+  --bg-grad: linear-gradient(135deg, #0F172A 0%, #1E293B 55%, #0C1A2E 100%);
+  --text-primary: #F0F9FF;
+  --text-secondary: #94A3B8;
+  --text-muted: #475569;
+  --card-bg: rgba(15,23,42,0.72);
+  --glass-bg: rgba(15,23,42,0.70);
+  --glass-border: rgba(14,165,233,0.18);
+  --border: rgba(14,165,233,0.20);
+  --input-bg: rgba(30,41,59,0.88);
+  --shadow: 0 8px 40px rgba(0,0,0,0.35);
+  --shadow-md: 0 12px 48px rgba(0,0,0,0.40);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--font-body);
+  background:var(--bg-grad);
+  color:var(--text-primary);
+  min-height:100vh;
+  transition:background var(--transition),color var(--transition);
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* ══════════════════════════════════════
+   DECORATIVE BG BLOBS
+══════════════════════════════════════ */
+.bg-blobs{
+  position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+}
+.blob{
+  position:absolute;border-radius:50%;filter:blur(90px);opacity:0.35;
+  transition:opacity var(--transition);
+}
+.blob-1{width:520px;height:520px;background:radial-gradient(#D9F1FF,#0EA5E9 70%);top:-140px;left:-140px;}
+.blob-2{width:400px;height:400px;background:radial-gradient(#FFF8E7,#E6C068 70%);bottom:-100px;right:-80px;}
+.blob-3{width:300px;height:300px;background:radial-gradient(#D9F1FF,transparent);top:50%;left:60%;}
+[data-theme="dark"] .blob-1{background:radial-gradient(#0F172A,#0EA5E9 80%);opacity:0.22;}
+[data-theme="dark"] .blob-2{background:radial-gradient(#1E293B,#E6C068 80%);opacity:0.18;}
+[data-theme="dark"] .blob-3{opacity:0.12;}
+
+/* ══════════════════════════════════════
+   PAGE SYSTEM
+══════════════════════════════════════ */
+.page{
+  display:none;min-height:100vh;position:relative;z-index:1;
+  animation:pageFadeIn 0.55s ease forwards;
+}
+.page.active{display:flex;flex-direction:column;}
+
+@keyframes pageFadeIn{
+  from{opacity:0;transform:translateY(22px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ══════════════════════════════════════
+   SHARED COMPONENTS
+══════════════════════════════════════ */
+.glass-card{
+  background:var(--card-bg);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border:1.5px solid var(--glass-border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--font-body);font-weight:500;font-size:0.95rem;
+  padding:13px 28px;border-radius:50px;cursor:pointer;
+  transition:all var(--transition);border:none;text-decoration:none;
+  letter-spacing:0.01em;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#0EA5E9,#0284C7);
+  color:#fff;box-shadow:0 4px 18px rgba(14,165,233,0.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(14,165,233,0.45);}
+.btn-secondary{
+  background:var(--card-bg);border:1.5px solid var(--border);
+  color:var(--text-primary);backdrop-filter:blur(10px);
+}
+.btn-secondary:hover{border-color:var(--ocean);color:var(--ocean);transform:translateY(-2px);}
+.btn-gold{
+  background:linear-gradient(135deg,#E6C068,#D4A843);
+  color:#0F172A;font-weight:600;
+  box-shadow:0 4px 18px rgba(230,192,104,0.35);
+}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(230,192,104,0.45);}
+.btn-outline{
+  background:transparent;border:1.5px solid var(--border);
+  color:var(--text-secondary);
+}
+.btn-outline:hover{border-color:var(--ocean);color:var(--ocean);}
+.btn-sm{padding:9px 20px;font-size:0.85rem;}
+
+/* ══════════════════════════════════════
+   LOGO / BRAND MARK
+══════════════════════════════════════ */
+.brand-mark{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--font-display);font-weight:600;
+  font-size:1.1rem;color:var(--text-primary);text-decoration:none;
+  letter-spacing:0.02em;
+}
+.brand-icon{
+  width:36px;height:36px;background:linear-gradient(135deg,#0EA5E9,#0284C7);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:1rem;font-weight:700;flex-shrink:0;
+}
+
+/* ══════════════════════════════════════
+   DARK MODE TOGGLE
+══════════════════════════════════════ */
+.theme-toggle{
+  width:52px;height:28px;border-radius:50px;
+  background:var(--card-bg);border:1.5px solid var(--border);
+  cursor:pointer;position:relative;transition:all var(--transition);
+  flex-shrink:0;
+}
+.theme-toggle::after{
+  content:'';position:absolute;top:3px;left:3px;
+  width:20px;height:20px;border-radius:50%;
+  background:linear-gradient(135deg,#FCD34D,#F59E0B);
+  transition:transform var(--transition),background var(--transition);
+}
+[data-theme="dark"] .theme-toggle::after{
+  transform:translateX(24px);
+  background:linear-gradient(135deg,#94A3B8,#64748B);
+}
+.theme-toggle-wrap{display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-muted);}
+
+/* ══════════════════════════════════════
+   PAGE 1: LANDING
+══════════════════════════════════════ */
+#page-landing{
+  align-items:center;justify-content:space-between;
+  padding:0;
+}
+.landing-nav{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:22px 36px;position:fixed;top:0;left:0;z-index:100;
+  background:var(--card-bg);backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:all var(--transition);
+}
+
+.landing-hero{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:140px 24px 80px;
+  width:100%;max-width:720px;margin:0 auto;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(14,165,233,0.10);border:1px solid rgba(14,165,233,0.25);
+  border-radius:50px;padding:6px 16px;
+  font-size:0.78rem;font-weight:500;color:var(--ocean);
+  letter-spacing:0.1em;text-transform:uppercase;margin-bottom:24px;
+}
+.hero-eyebrow-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--ocean);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(1.4);}}
+
+.hero-title{
+  font-family:var(--font-display);font-size:clamp(2.6rem,7vw,5rem);
+  font-weight:600;line-height:1.08;color:var(--text-primary);
+  margin-bottom:14px;letter-spacing:-0.01em;
+}
+.hero-title em{
+  font-style:italic;color:var(--ocean);
+}
+.hero-tagline{
+  font-size:clamp(1rem,2.5vw,1.18rem);color:var(--text-secondary);
+  font-weight:300;letter-spacing:0.04em;margin-bottom:48px;
+  font-family:var(--font-display);font-style:italic;
+}
+.hero-actions{
+  display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:64px;
+}
+.hero-decor{
+  display:flex;gap:24px;align-items:center;
+}
+.decor-pill{
+  display:flex;align-items:center;gap:8px;padding:8px 16px;
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:50px;font-size:0.78rem;color:var(--text-secondary);
+  backdrop-filter:blur(10px);
+}
+.decor-pill span:first-child{font-size:1rem;}
+
+.hero-float{
+  position:absolute;pointer-events:none;
+  animation:float 6s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(0deg);}
+  50%{transform:translateY(-18px) rotate(3deg);}
+}
+.float-1{top:22%;right:8%;font-size:3.5rem;animation-delay:0s;}
+.float-2{top:55%;left:5%;font-size:2.5rem;animation-delay:1.5s;}
+.float-3{bottom:25%;right:12%;font-size:2rem;animation-delay:3s;}
+
+/* ══════════════════════════════════════
+   PAGE 2: NAME INPUT
+══════════════════════════════════════ */
+.form-page{
+  align-items:center;justify-content:center;
+  padding:24px;
+}
+.form-card{
+  width:100%;max-width:480px;padding:48px 40px;
+}
+.form-header{margin-bottom:36px;text-align:center;}
+.form-header .back-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  color:var(--text-muted);font-size:0.83rem;cursor:pointer;
+  margin-bottom:28px;transition:color var(--transition);
+  background:none;border:none;font-family:var(--font-body);
+}
+.form-header .back-btn:hover{color:var(--ocean);}
+.form-title{
+  font-family:var(--font-display);font-size:2rem;
+  font-weight:600;color:var(--text-primary);margin-bottom:8px;
+}
+.form-subtitle{font-size:0.9rem;color:var(--text-secondary);line-height:1.6;}
+
+.input-wrap{position:relative;margin-bottom:24px;}
+.input-wrap label{
+  display:block;font-size:0.82rem;font-weight:500;
+  color:var(--text-secondary);margin-bottom:8px;letter-spacing:0.02em;
+}
+.input-field{
+  width:100%;padding:14px 18px;
+  background:var(--input-bg);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);
+  font-family:var(--font-body);font-size:0.95rem;
+  color:var(--text-primary);
+  transition:border-color var(--transition),box-shadow var(--transition);
+  outline:none;
+}
+.input-field::placeholder{color:var(--text-muted);}
+.input-field:focus{
+  border-color:var(--ocean);
+  box-shadow:0 0 0 3px rgba(14,165,233,0.12);
+}
+
+/* ══════════════════════════════════════
+   PAGE 3: QUIZ
+══════════════════════════════════════ */
+#page-quiz{padding:24px;align-items:center;justify-content:center;}
+.quiz-wrap{width:100%;max-width:560px;}
+
+.progress-bar-wrap{margin-bottom:32px;}
+.progress-info{
+  display:flex;justify-content:space-between;
+  font-size:0.8rem;color:var(--text-muted);margin-bottom:8px;
+}
+.progress-track{
+  height:5px;background:var(--border);border-radius:50px;overflow:hidden;
+}
+.progress-fill{
+  height:100%;background:linear-gradient(90deg,#0EA5E9,#38BDF8);
+  border-radius:50px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+.quiz-card{padding:40px 36px;}
+.quiz-step{display:none;}
+.quiz-step.active{display:block;animation:pageFadeIn 0.4s ease;}
+
+.q-number{
+  font-size:0.75rem;font-weight:600;color:var(--ocean);
+  letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;
+}
+.q-title{
+  font-family:var(--font-display);font-size:1.75rem;
+  font-weight:600;color:var(--text-primary);margin-bottom:28px;
+  line-height:1.25;
+}
+.option-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;
+}
+.option-grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
+
+.option-btn{
+  padding:16px 14px;border-radius:var(--radius-sm);
+  background:var(--input-bg);border:1.5px solid var(--border);
+  cursor:pointer;transition:all 0.25s ease;text-align:center;
+  font-family:var(--font-body);
+}
+.option-btn:hover{border-color:var(--ocean);background:rgba(14,165,233,0.06);}
+.option-btn.selected{
+  border-color:var(--ocean);background:rgba(14,165,233,0.10);
+  box-shadow:0 0 0 3px rgba(14,165,233,0.15);
+}
+.option-icon{font-size:1.7rem;margin-bottom:8px;}
+.option-label{
+  font-size:0.88rem;font-weight:500;color:var(--text-primary);
+  line-height:1.3;
+}
+.option-sub{font-size:0.75rem;color:var(--text-muted);margin-top:3px;}
+
+.quiz-nav{display:flex;gap:12px;justify-content:flex-end;}
+
+/* ══════════════════════════════════════
+   PAGE 4: RESULT
+══════════════════════════════════════ */
+#page-result{padding:24px;align-items:center;justify-content:flex-start;min-height:100vh;}
+.result-inner{width:100%;max-width:600px;margin:0 auto;padding:40px 0;}
+
+.result-greeting{
+  text-align:center;margin-bottom:36px;
+}
+.result-greeting .badge{
+  display:inline-block;background:linear-gradient(135deg,rgba(230,192,104,0.18),rgba(230,192,104,0.08));
+  border:1px solid rgba(230,192,104,0.35);border-radius:50px;
+  padding:5px 14px;font-size:0.75rem;color:#B8860B;
+  letter-spacing:0.08em;text-transform:uppercase;font-weight:500;margin-bottom:16px;
+}
+[data-theme="dark"] .result-greeting .badge{color:var(--gold);}
+.result-greeting h2{
+  font-family:var(--font-display);font-size:clamp(1.6rem,4vw,2.3rem);
+  font-weight:600;color:var(--text-primary);line-height:1.2;
+}
+.result-greeting h2 span{color:var(--ocean);}
+
+.result-cards{display:flex;flex-direction:column;gap:16px;margin-bottom:24px;}
+
+.result-card{padding:24px 26px;position:relative;overflow:hidden;}
+.result-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+}
+.result-card.meal::before{background:linear-gradient(90deg,#0EA5E9,#38BDF8);}
+.result-card.soup::before{background:linear-gradient(90deg,#F59E0B,#FBBF24);}
+.result-card.drink::before{background:linear-gradient(90deg,#10B981,#34D399);}
+
+.rc-label{
+  display:flex;align-items:center;gap:8px;
+  font-size:0.73rem;font-weight:600;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;
+}
+.rc-label-icon{font-size:1rem;}
+.rc-name{
+  font-family:var(--font-display);font-size:1.55rem;
+  font-weight:600;color:var(--text-primary);margin-bottom:6px;
+}
+.rc-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.rc-tag{
+  padding:4px 11px;border-radius:50px;font-size:0.73rem;font-weight:500;
+  background:rgba(14,165,233,0.09);color:var(--ocean);border:1px solid rgba(14,165,233,0.2);
+}
+.rc-tag.gold{background:rgba(230,192,104,0.12);color:#92700A;border-color:rgba(230,192,104,0.3);}
+[data-theme="dark"] .rc-tag.gold{color:var(--gold);}
+.rc-tag.green{background:rgba(16,185,129,0.10);color:#047857;border-color:rgba(16,185,129,0.2);}
+[data-theme="dark"] .rc-tag.green{color:#34D399;}
+
+.why-card{
+  padding:22px 24px;margin-bottom:24px;
+  border-left:3px solid var(--gold);
+}
+.why-label{
+  font-size:0.75rem;font-weight:600;color:var(--gold);
+  letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;
+}
+.why-text{font-size:0.92rem;color:var(--text-secondary);line-height:1.7;}
+
+.result-actions{display:flex;gap:12px;flex-wrap:wrap;}
+
+/* Waiter Modal */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:999;
+  background:rgba(15,23,42,0.55);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:24px;
+}
+.modal-overlay.open{display:flex;animation:pageFadeIn 0.3s ease;}
+.modal-box{
+  background:var(--card-bg);backdrop-filter:blur(20px);
+  border:1.5px solid var(--glass-border);border-radius:var(--radius-lg);
+  padding:40px 36px;max-width:420px;width:100%;text-align:center;
+  box-shadow:var(--shadow-md);
+}
+.modal-icon{font-size:3rem;margin-bottom:16px;}
+.modal-title{
+  font-family:var(--font-display);font-size:1.6rem;
+  font-weight:600;margin-bottom:10px;color:var(--text-primary);
+}
+.modal-text{font-size:0.9rem;color:var(--text-secondary);line-height:1.65;margin-bottom:24px;}
+.modal-close{cursor:pointer;}
+
+/* ══════════════════════════════════════
+   PAGE 5: ADMIN LOGIN
+══════════════════════════════════════ */
+#page-admin-login{align-items:center;justify-content:center;padding:24px;}
+.admin-login-card{width:100%;max-width:420px;padding:48px 40px;text-align:center;}
+.admin-avatar{
+  width:72px;height:72px;border-radius:20px;
+  background:linear-gradient(135deg,#0EA5E9,#0284C7);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;margin:0 auto 24px;
+  box-shadow:0 8px 24px rgba(14,165,233,0.30);
+}
+.error-msg{
+  background:rgba(239,68,68,0.09);border:1px solid rgba(239,68,68,0.25);
+  color:#DC2626;border-radius:var(--radius-sm);padding:10px 14px;
+  font-size:0.83rem;margin-bottom:16px;display:none;text-align:left;
+}
+[data-theme="dark"] .error-msg{color:#FCA5A5;}
+
+/* ══════════════════════════════════════
+   PAGE 6: ADMIN DASHBOARD
+══════════════════════════════════════ */
+#page-dashboard{display:flex;flex-direction:column;}
+.dash-nav{
+  background:var(--card-bg);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:16px 32px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;flex-shrink:0;
+}
+.dash-title{
+  font-family:var(--font-display);font-size:1.1rem;
+  font-weight:600;color:var(--text-primary);
+}
+.dash-title span{color:var(--ocean);}
+
+.dash-content{flex:1;padding:28px 32px;overflow-y:auto;}
+
+.dash-stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:14px;margin-bottom:28px;
+}
+.stat-card{
+  padding:20px 22px;border-radius:var(--radius);
+  background:var(--card-bg);backdrop-filter:blur(14px);
+  border:1.5px solid var(--border);
+}
+.stat-label{font-size:0.75rem;color:var(--text-muted);font-weight:500;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:6px;}
+.stat-value{font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--text-primary);}
+.stat-sub{font-size:0.75rem;color:var(--text-muted);margin-top:2px;}
+
+.dash-toolbar{
+  display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+  margin-bottom:18px;
+}
+.filter-select{
+  padding:9px 14px;border-radius:var(--radius-sm);
+  background:var(--input-bg);border:1.5px solid var(--border);
+  color:var(--text-primary);font-family:var(--font-body);font-size:0.86rem;
+  outline:none;cursor:pointer;transition:border-color var(--transition);
+}
+.filter-select:focus{border-color:var(--ocean);}
+.dash-search{
+  flex:1;min-width:180px;padding:9px 14px;
+  border-radius:var(--radius-sm);background:var(--input-bg);
+  border:1.5px solid var(--border);color:var(--text-primary);
+  font-family:var(--font-body);font-size:0.86rem;outline:none;
+  transition:border-color var(--transition);
+}
+.dash-search:focus{border-color:var(--ocean);}
+.dash-search::placeholder{color:var(--text-muted);}
+
+.table-wrap{
+  background:var(--card-bg);backdrop-filter:blur(14px);
+  border:1.5px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;overflow-x:auto;
+}
+table{width:100%;border-collapse:collapse;min-width:700px;}
+thead{background:rgba(14,165,233,0.07);}
+th{
+  padding:13px 16px;text-align:left;
+  font-size:0.73rem;font-weight:600;color:var(--text-muted);
+  letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid var(--border);
+}
+td{
+  padding:13px 16px;font-size:0.86rem;color:var(--text-primary);
+  border-bottom:1px solid var(--border);vertical-align:middle;
+}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(14,165,233,0.03);}
+
+.avail-toggle{
+  width:44px;height:24px;border-radius:50px;border:none;cursor:pointer;
+  position:relative;transition:background 0.25s ease;flex-shrink:0;
+}
+.avail-toggle.on{background:linear-gradient(135deg,#10B981,#059669);}
+.avail-toggle.off{background:#CBD5E1;}
+.avail-toggle::after{
+  content:'';position:absolute;top:3px;left:3px;
+  width:18px;height:18px;border-radius:50%;background:#fff;
+  transition:transform 0.25s ease;
+  box-shadow:0 1px 3px rgba(0,0,0,0.2);
+}
+.avail-toggle.on::after{transform:translateX(20px);}
+
+.cat-badge{
+  display:inline-block;padding:3px 10px;border-radius:50px;
+  font-size:0.72rem;font-weight:500;
+  background:rgba(14,165,233,0.10);color:var(--ocean);
+}
+
+/* ADD ITEM MODAL */
+.add-modal{
+  display:none;position:fixed;inset:0;z-index:999;
+  background:rgba(15,23,42,0.55);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:24px;overflow-y:auto;
+}
+.add-modal.open{display:flex;}
+.add-modal-box{
+  background:var(--card-bg);backdrop-filter:blur(20px);
+  border:1.5px solid var(--glass-border);border-radius:var(--radius-lg);
+  padding:36px;max-width:500px;width:100%;
+  box-shadow:var(--shadow-md);
+  animation:pageFadeIn 0.3s ease;
+}
+.add-modal-title{
+  font-family:var(--font-display);font-size:1.4rem;
+  font-weight:600;margin-bottom:24px;color:var(--text-primary);
+}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group label{font-size:0.8rem;font-weight:500;color:var(--text-secondary);}
+.form-group select,.form-group input{
+  padding:10px 12px;border-radius:var(--radius-sm);
+  background:var(--input-bg);border:1.5px solid var(--border);
+  color:var(--text-primary);font-family:var(--font-body);font-size:0.88rem;
+  outline:none;transition:border-color var(--transition);
+}
+.form-group select:focus,.form-group input:focus{border-color:var(--ocean);}
+.full-col{grid-column:1/-1;}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media(max-width:640px){
+  .landing-nav{padding:16px 20px;}
+  .landing-hero{padding:120px 20px 60px;}
+  .form-card,.admin-login-card{padding:32px 24px;}
+  .quiz-card{padding:28px 22px;}
+  .option-grid{grid-template-columns:1fr;}
+  .option-grid.cols-3{grid-template-columns:1fr 1fr;}
+  .dash-content{padding:20px 16px;}
+  .dash-nav{padding:14px 20px;}
+  .result-inner{padding:28px 0;}
+  .hero-float{display:none;}
+  .modal-box,.add-modal-box{padding:28px 22px;}
+  .modal-grid{grid-template-columns:1fr;}
+}
+@media(max-width:420px){
+  .hero-actions{flex-direction:column;align-items:center;}
+  .hero-decor{flex-wrap:wrap;justify-content:center;}
+  .result-actions{flex-direction:column;}
+}
+
+/* ══════════════════════════════════════
+   ADMIN DASHBOARD HARD LOCK
+   Always hidden by default via CSS.
+   JS only reveals it after auth check.
+══════════════════════════════════════ */
+#page-dashboard{display:none !important;}
+#page-dashboard.admin-visible{display:flex !important;}
+
+/* UTILITY */
+.text-center{text-align:center;}
+.mt-8{margin-top:8px;}
+.mt-16{margin-top:16px;}
+.mt-24{margin-top:24px;}
+.hidden{display:none !important;}
+.divider{height:1px;background:var(--border);margin:20px 0;}
+</style>
+</head>
+<body>
+
+<!-- ════════════ BG BLOBS ════════════ -->
+<div class="bg-blobs" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     PAGE 1: LANDING
+══════════════════════════════════════ -->
+<section class="page active" id="page-landing">
+  <nav class="landing-nav">
+    <a class="brand-mark" href="#">
+      <div class="brand-icon">S</div>
+      <span>Silvergates</span>
+    </a>
+    <div class="theme-toggle-wrap">
+      <span id="theme-label">Light</span>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"></button>
+    </div>
+  </nav>
+
+  <div class="landing-hero">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Smart Dining Assistant
+    </div>
+    <h1 class="hero-title">
+      Silvergates<br/><em>Hotel & Suites</em>
+    </h1>
+    <p class="hero-tagline">Experience luxury that truly matters</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="goTo('page-name')" style="font-size:1rem;padding:15px 34px;">
+        ✨ Get Your Perfect Meal
+      </button>
+      <button class="btn btn-secondary" onclick="goTo('page-admin-login')">
+        🔐 Admin Login
+      </button>
+    </div>
+    <div class="hero-decor">
+      <div class="decor-pill"><span>🍽️</span><span>Fine Dining</span></div>
+      <div class="decor-pill"><span>🤖</span><span>AI-Powered</span></div>
+      <div class="decor-pill"><span>⭐</span><span>Premium Service</span></div>
+    </div>
+  </div>
+
+  <div class="hero-float float-1">🍜</div>
+  <div class="hero-float float-2">🥂</div>
+  <div class="hero-float float-3">🍤</div>
+</section>
+
+<!-- ══════════════════════════════════
+     PAGE 2: NAME INPUT
+══════════════════════════════════════ -->
+<section class="page form-page" id="page-name">
+  <div class="glass-card form-card">
+    <div class="form-header">
+      <button class="back-btn" onclick="goTo('page-landing')">← Back</button>
+      <div class="text-center">
+        <div style="font-size:2.5rem;margin-bottom:16px;">👋</div>
+        <h2 class="form-title">A Warm Welcome</h2>
+        <p class="form-subtitle">Welcome to Silvergates. What is your name so we can personalise your dining experience?</p>
+      </div>
+    </div>
+    <div class="input-wrap">
+      <label for="guestName">Your Name</label>
+      <input class="input-field" type="text" id="guestName" placeholder="e.g. Adaeze, Emeka, James…" autocomplete="given-name"/>
+    </div>
+    <button class="btn btn-primary" style="width:100%;" onclick="handleNameContinue()">Continue →</button>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     PAGE 3: QUIZ
+══════════════════════════════════════ -->
+<section class="page" id="page-quiz">
+  <div class="quiz-wrap">
+    <div class="progress-bar-wrap">
+      <div class="progress-info">
+        <span id="progressLabel">Question 1 of 5</span>
+        <span id="progressPct">20%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:20%"></div>
+      </div>
+    </div>
+
+    <div class="glass-card quiz-card">
+
+      <!-- Q1: TASTE -->
+      <div class="quiz-step active" id="step-1">
+        <div class="q-number">Question 01 / 05</div>
+        <h3 class="q-title">What kind of taste are you in the mood for?</h3>
+        <div class="option-grid">
+          <div class="option-btn" onclick="selectOption(this,'taste','Spicy')">
+            <div class="option-icon">🌶️</div>
+            <div class="option-label">Spicy &amp; Hot</div>
+            <div class="option-sub">Bold &amp; fiery</div>
+          </div>
+          <div class="option-btn" onclick="selectOption(this,'taste','Rich')">
+            <div class="option-icon">🍖</div>
+            <div class="option-label">Rich &amp; Savory</div>
+            <div class="option-sub">Hearty &amp; deep</div>
+          </div>
+          <div class="option-btn" onclick="selectOption(this,'taste','Light')">
+            <div class="option-icon">🥗</div>
+            <div class="option-label">Light &amp; Fresh</div>
+            <div class="option-sub">Crisp &amp; clean</div>
+          </div>
+          <div class="option-btn" onclick="selectOption(this,'taste','Sweet')">
+            <div class="option-icon">🧁</div>
+            <div class="option-label">Sweet &amp; Comfort</div>
+            <div class="option-sub">Warm &amp; soothing</div>
+          </div>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn btn-secondary btn-sm" onclick="goTo('page-name')">← Back</button>
+          <button class="btn btn-primary btn-sm" onclick="nextStep(1)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q2: HUNGER -->
+      <div class="quiz-step" id="step-2">
+        <div class="q-number">Question 02 / 05</div>
+        <h3 class="q-title">How hungry are you right now?</h3>
+        <div class="option-grid cols-3">
+          <div class="option-btn" onclick="selectOption(this,'hunger','Light')">
+            <div class="option-icon">🍵</div>
+            <div class="option-label">Light</div>
+            <div class="option-sub">Just a snack</div>
+          </div>
+          <div class="option-btn" onclick="selectOption(this,'hunger','Medium')">
+            <div class="option-icon">🍱</div>
+            <div class="option-label">Medium</div>
+            <div class="option-sub">Decent portion</div>
+          </div>
+          <div class="option-btn" onclick="selectOption(this,'hunger','Heavy')">
+            <div class="option-icon">🍛</div>
+            <div class="option-label">Heavy</div>
+            <div class="option-sub">Full meal</div>
+          </div>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn btn-secondary btn-sm" onclick="prevStep(2)">← Back</button>
+          <button class="btn btn-primary btn-sm" onclick="nextStep(2)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q3: FOOD STYLE -->
+      <div class="quiz-step" id="step-3">
+        <div class="q-number">Question 03 / 05</div>
+        <h3 class="q-title">What style of food are you feeling?</h3>
+        <div class="option-grid">
+          <div class="option-btn" onclick="selectOption(this,'style','Traditional')">
+            <div class="option-icon">🫕</div>
+            <div class="option-label">Local Traditional</div>
+            <div class="option-sub">Nigerian classics</div>
+          </div>
+          <div class="option-btn" onclick="selectOption(this,'style','Continental')">
+            <div class="option-icon">🍝</div>
+            <div class="option-label">Continental / Premium</div>
+            <div class="option-sub">World cuisine</div>
+          </div>
+          <div class="option-btn" onclick="selectOption(this,'style','Quick')">
+            <div class="option-icon">⚡</div>
+            <div class="option-label">Quick Bite</div>
+            <div class="option-sub">Fast &amp; satisfying</div>
+          </div>
+          <div class="option-btn" onclick="selectOption(this,'style','Healthy')">
+            <div class="option-icon">🥦</div>
+            <div class="option-label">Healthy Option</div>
+            <div class="option-sub">Clean &amp; nutritious</div>
+          </div>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn btn-secondary btn-sm" onclick="prevStep(3)">← Back</button>
+          <button class="btn btn-primary btn-sm" onclick="nextStep(3)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q4: SPICE -->
+      <div class="quiz-step" id="step-4">
+        <div class="q-number">Question 04 / 05</div>
+        <h3 class="q-title">How much spice can you handle?</h3>
+        <div class="option-grid cols-3">
+          <div class="option-btn" onclick="selectOption(this,'spice','None')">
+            <div class="option-icon">❄️</div>
+            <div class="option-label">No Spice</div>
+            <div class="option-sub">Keep it mild</div>
+          </div>
+          <div class="option-btn" onclick="selectOption(this,'spice','Mild')">
+            <div class="option-icon">🌿</div>
+            <div class="option-label">Mild</div>
+            <div class="option-sub">A gentle kick</div>
+          </div>
+          <div class="option-btn" onclick="selectOption(this,'spice','Hot')">
+            <div class="option-icon">🔥</div>
+            <div class="option-label">Hot</div>
+            <div class="option-sub">Bring the heat</div>
+          </div>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn btn-secondary btn-sm" onclick="prevStep(4)">← Back</button>
+          <button class="btn btn-primary btn-sm" onclick="nextStep(4)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Q5: DRINK -->
+      <div class="quiz-step" id="step-5">
+        <div class="q-number">Question 05 / 05</div>
+        <h3 class="q-title">What would you like to drink?</h3>
+        <div class="option-grid" style="grid-template-columns:1fr 1fr;">
+          <div class="option-btn" onclick="selectOption(this,'drink','Non-Alcoholic')">
+            <div class="option-icon">🧃</div>
+            <div class="option-label">Non-Alcoholic</div>
+            <div class="option-sub">Mocktails, juices &amp; more</div>
+          </div>
+          <div class="option-btn" onclick="selectOption(this,'drink','Alcoholic')">
+            <div class="option-icon">🍺</div>
+            <div class="option-label">Alcoholic</div>
+            <div class="option-sub">Beers &amp; chilled selections</div>
+          </div>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn btn-secondary btn-sm" onclick="prevStep(5)">← Back</button>
+          <button class="btn btn-gold btn-sm" onclick="getRecommendation()">✨ Get My Meal</button>
+        </div>
+      </div>
+
+    </div><!-- /quiz-card -->
+  </div><!-- /quiz-wrap -->
+</section>
+
+<!-- ══════════════════════════════════
+     PAGE 4: RESULT
+══════════════════════════════════════ -->
+<section class="page" id="page-result">
+  <div class="result-inner">
+    <div class="result-greeting">
+      <div class="badge">✦ Your Personalised Selection</div>
+      <h2 id="resultHeading">Here is your perfect meal, <span id="resultName"></span>.</h2>
+    </div>
+
+    <div class="result-cards">
+      <div class="glass-card result-card meal" id="cardMeal">
+        <div class="rc-label"><span class="rc-label-icon">🍽️</span> Main Dish</div>
+        <div class="rc-name" id="mealName">—</div>
+        <div class="rc-meta" id="mealMeta"></div>
+      </div>
+      <div class="glass-card result-card soup hidden" id="cardSoup">
+        <div class="rc-label"><span class="rc-label-icon">🫕</span> Paired Soup</div>
+        <div class="rc-name" id="soupName">—</div>
+        <div class="rc-meta" id="soupMeta"></div>
+      </div>
+      <div class="glass-card result-card drink" id="cardDrink">
+        <div class="rc-label"><span class="rc-label-icon">🥤</span> Drink Pairing</div>
+        <div class="rc-name" id="drinkName">—</div>
+        <div class="rc-meta" id="drinkMeta"></div>
+      </div>
+    </div>
+
+    <div class="glass-card why-card" id="whyCard">
+      <div class="why-label">✦ Why this fits you</div>
+      <p class="why-text" id="whyText">—</p>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn btn-primary" onclick="tryAgain()">🔄 Try Again</button>
+      <button class="btn btn-gold" onclick="document.getElementById('waiterModal').classList.add('open')">🛎️ Call Waiter</button>
+      <button class="btn btn-secondary" onclick="goTo('page-landing')">🏠 Home</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     PAGE 5: ADMIN LOGIN
+══════════════════════════════════════ -->
+<section class="page form-page" id="page-admin-login">
+  <div class="glass-card admin-login-card">
+    <div class="admin-avatar">🔐</div>
+    <h2 class="form-title" style="margin-bottom:6px;">Staff Portal</h2>
+    <p style="font-size:0.88rem;color:var(--text-secondary);margin-bottom:28px;line-height:1.5;">
+      Silvergates Hotel &amp; Suites<br/>Restaurant Management System
+    </p>
+    <div class="error-msg" id="loginError">Invalid username or password. Please try again.</div>
+    <div class="input-wrap">
+      <label for="adminUser">Email Address</label>
+      <input class="input-field" type="email" id="adminUser" placeholder="staff@silvergatehotel.com"/>
+    </div>
+    <div class="input-wrap">
+      <label for="adminPass">Password</label>
+      <input class="input-field" type="password" id="adminPass" placeholder="••••••••"/>
+    </div>
+    <button class="btn btn-primary" style="width:100%;margin-bottom:16px;" onclick="handleAdminLogin()">Sign In →</button>
+    <button class="btn btn-outline btn-sm" style="width:100%;" onclick="goTo('page-landing')">← Back to Home</button>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     PAGE 6: ADMIN DASHBOARD
+══════════════════════════════════════ -->
+<section class="page" id="page-dashboard">
+  <nav class="dash-nav">
+    <div>
+      <div class="dash-title">Silvergates <span>Menu Dashboard</span></div>
+      <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px;">Restaurant Management System</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <button class="btn btn-gold btn-sm" onclick="document.getElementById('addModal').classList.add('open')">+ Add Item</button>
+      <button class="btn btn-outline btn-sm" onclick="handleLogout()">Log Out</button>
+    </div>
+  </nav>
+
+  <div class="dash-content">
+    <!-- Stats -->
+    <div class="dash-stats" id="dashStats"></div>
+
+    <!-- Toolbar -->
+    <div class="dash-toolbar">
+      <select class="filter-select" id="catFilter" onchange="renderTable()">
+        <option value="">All Categories</option>
+        <option>Rice &amp; Meals</option>
+        <option>Pasta &amp; Noodles</option>
+        <option>Swallow</option>
+        <option>Soups</option>
+        <option>Proteins</option>
+        <option>Grills &amp; Peppery</option>
+        <option>Light Meals</option>
+        <option>Continental</option>
+        <option>Healthy</option>
+        <option>Finger Foods</option>
+        <option>Non-Alcoholic Drinks</option>
+        <option>Alcoholic Drinks</option>
+      </select>
+      <select class="filter-select" id="availFilter" onchange="renderTable()">
+        <option value="">All Status</option>
+        <option value="true">Available</option>
+        <option value="false">Unavailable</option>
+      </select>
+      <input class="dash-search" type="text" id="dashSearch" placeholder="🔍 Search menu items…" oninput="renderTable()"/>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Taste</th>
+            <th>Spice</th>
+            <th>Weight</th>
+            <th>Style</th>
+            <th>Available</th>
+          </tr>
+        </thead>
+        <tbody id="menuTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     WAITER MODAL
+══════════════════════════════════════ -->
+<div class="modal-overlay" id="waiterModal">
+  <div class="modal-box">
+    <div class="modal-icon">🛎️</div>
+    <h3 class="modal-title">Waiter Notified!</h3>
+    <p class="modal-text">
+      Your personalised order has been sent to our service team. A member of our staff will be with you shortly to take your full order and ensure a seamless dining experience.
+    </p>
+    <div style="background:rgba(14,165,233,0.08);border:1px solid rgba(14,165,233,0.2);border-radius:12px;padding:14px;margin-bottom:20px;font-size:0.85rem;color:var(--text-secondary);">
+      📍 Table service active &nbsp;·&nbsp; ⏱ Est. wait: 2–3 mins
+    </div>
+    <button class="btn btn-primary modal-close" style="width:100%;" onclick="document.getElementById('waiterModal').classList.remove('open')">
+      Dismiss
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     ADD ITEM MODAL
+══════════════════════════════════════ -->
+<div class="add-modal" id="addModal">
+  <div class="add-modal-box">
+    <h3 class="add-modal-title">➕ Add New Menu Item</h3>
+    <div class="modal-grid">
+      <div class="form-group full-col">
+        <label>Item Name *</label>
+        <input type="text" id="newName" placeholder="e.g. Suya Platter"/>
+      </div>
+      <div class="form-group">
+        <label>Category *</label>
+        <select id="newCategory">
+          <option value="">Select…</option>
+          <option>Rice &amp; Meals</option>
+          <option>Pasta &amp; Noodles</option>
+          <option>Swallow</option>
+          <option>Soups</option>
+          <option>Proteins</option>
+          <option>Grills &amp; Peppery</option>
+          <option>Light Meals</option>
+          <option>Continental</option>
+          <option>Healthy</option>
+          <option>Finger Foods</option>
+          <option>Non-Alcoholic Drinks</option>
+          <option>Alcoholic Drinks</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Taste</label>
+        <select id="newTaste">
+          <option>Rich</option>
+          <option>Spicy</option>
+          <option>Light</option>
+          <option>Sweet</option>
+          <option>Savory</option>
+          <option>Neutral</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Spice Level</label>
+        <select id="newSpice">
+          <option>None</option>
+          <option>Mild</option>
+          <option>Medium</option>
+          <option>Hot</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Weight / Portion</label>
+        <select id="newWeight">
+          <option>Light</option>
+          <option>Medium</option>
+          <option>Heavy</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Style</label>
+        <select id="newStyle">
+          <option>Traditional</option>
+          <option>Continental</option>
+          <option>Quick</option>
+          <option>Healthy</option>
+          <option>Alcoholic</option>
+          <option>Non-Alcoholic</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary btn-sm" onclick="document.getElementById('addModal').classList.remove('open')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="addMenuItem()">Add to Menu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════ -->
+<script>
+/* ─── MENU DATA ─────────────────────────────────────────── */
+const DEFAULT_MENU = [
+  // RICE & MEALS
+  {name:"Jollof Rice",category:"Rice & Meals",taste:"Rich",spice:"Medium",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Fried Rice",category:"Rice & Meals",taste:"Rich",spice:"Mild",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Italian Rice",category:"Rice & Meals",taste:"Savory",spice:"None",weight:"Medium",style:"Continental",availability:true},
+  {name:"Seafood Rice",category:"Rice & Meals",taste:"Rich",spice:"Mild",weight:"Heavy",style:"Continental",availability:true},
+  {name:"Chicken Biryani",category:"Rice & Meals",taste:"Spicy",spice:"Medium",weight:"Heavy",style:"Continental",availability:true},
+  {name:"Chicken Curry",category:"Rice & Meals",taste:"Spicy",spice:"Hot",weight:"Heavy",style:"Continental",availability:true},
+
+  // PASTA & NOODLES
+  {name:"Seafood Pasta",category:"Pasta & Noodles",taste:"Rich",spice:"Mild",weight:"Medium",style:"Continental",availability:true},
+  {name:"Stir Fry Pasta",category:"Pasta & Noodles",taste:"Savory",spice:"Mild",weight:"Medium",style:"Continental",availability:true},
+  {name:"Stir Fry Noodles",category:"Pasta & Noodles",taste:"Savory",spice:"Mild",weight:"Medium",style:"Quick",availability:true},
+  {name:"Spaghetti Bolognese",category:"Pasta & Noodles",taste:"Rich",spice:"None",weight:"Medium",style:"Continental",availability:true},
+  {name:"Spaghetti Arrabiata",category:"Pasta & Noodles",taste:"Spicy",spice:"Hot",weight:"Medium",style:"Continental",availability:true},
+  {name:"Spaghetti Carbonara",category:"Pasta & Noodles",taste:"Rich",spice:"None",weight:"Medium",style:"Continental",availability:true},
+
+  // SWALLOW
+  {name:"Amala",category:"Swallow",taste:"Rich",spice:"None",weight:"Heavy",style:"Traditional",availability:true},
+  {name:"Pounded Yam",category:"Swallow",taste:"Rich",spice:"None",weight:"Heavy",style:"Traditional",availability:true},
+  {name:"Eba",category:"Swallow",taste:"Rich",spice:"None",weight:"Heavy",style:"Traditional",availability:true},
+  {name:"Fufu",category:"Swallow",taste:"Rich",spice:"None",weight:"Heavy",style:"Traditional",availability:true},
+  {name:"Wheat",category:"Swallow",taste:"Rich",spice:"None",weight:"Heavy",style:"Traditional",availability:true},
+
+  // SOUPS
+  {name:"Egusi",category:"Soups",taste:"Rich",spice:"Mild",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Ogbono",category:"Soups",taste:"Rich",spice:"Mild",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Efo Riro",category:"Soups",taste:"Spicy",spice:"Hot",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Oha Soup",category:"Soups",taste:"Rich",spice:"Mild",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Mixed Okro",category:"Soups",taste:"Savory",spice:"Mild",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Edikaikong",category:"Soups",taste:"Rich",spice:"Mild",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Afang Soup",category:"Soups",taste:"Rich",spice:"Mild",weight:"Medium",style:"Traditional",availability:true},
+
+  // PROTEINS
+  {name:"Chicken",category:"Proteins",taste:"Rich",spice:"Mild",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Beef",category:"Proteins",taste:"Rich",spice:"None",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Goatmeat",category:"Proteins",taste:"Rich",spice:"Mild",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Assorted",category:"Proteins",taste:"Rich",spice:"Mild",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Titus Fish",category:"Proteins",taste:"Savory",spice:"Mild",weight:"Light",style:"Traditional",availability:true},
+  {name:"Croaker Fish",category:"Proteins",taste:"Savory",spice:"Mild",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Snail",category:"Proteins",taste:"Savory",spice:"None",weight:"Light",style:"Traditional",availability:true},
+
+  // GRILLS & PEPPERY
+  {name:"Peppered Chicken",category:"Grills & Peppery",taste:"Spicy",spice:"Hot",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Peppered Beef",category:"Grills & Peppery",taste:"Spicy",spice:"Hot",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Peppered Fish",category:"Grills & Peppery",taste:"Spicy",spice:"Hot",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Goatmeat Peppersoup",category:"Grills & Peppery",taste:"Spicy",spice:"Hot",weight:"Medium",style:"Traditional",availability:true},
+  {name:"Chicken Peppersoup",category:"Grills & Peppery",taste:"Spicy",spice:"Hot",weight:"Light",style:"Traditional",availability:true},
+  {name:"Catfish Peppersoup",category:"Grills & Peppery",taste:"Spicy",spice:"Hot",weight:"Light",style:"Traditional",availability:true},
+  {name:"Grilled Chicken",category:"Grills & Peppery",taste:"Savory",spice:"Mild",weight:"Medium",style:"Continental",availability:true},
+  {name:"Grilled Prawns",category:"Grills & Peppery",taste:"Savory",spice:"Mild",weight:"Light",style:"Continental",availability:true},
+
+  // LIGHT MEALS
+  {name:"Club Sandwich",category:"Light Meals",taste:"Savory",spice:"None",weight:"Light",style:"Quick",availability:true},
+  {name:"Chicken Shawarma",category:"Light Meals",taste:"Savory",spice:"Mild",weight:"Light",style:"Quick",availability:true},
+  {name:"Beef Shawarma",category:"Light Meals",taste:"Savory",spice:"Mild",weight:"Light",style:"Quick",availability:true},
+  {name:"Vegetable Shawarma",category:"Light Meals",taste:"Light",spice:"None",weight:"Light",style:"Healthy",availability:true},
+  {name:"Chicken Burger",category:"Light Meals",taste:"Rich",spice:"None",weight:"Medium",style:"Quick",availability:true},
+  {name:"Beef Burger",category:"Light Meals",taste:"Rich",spice:"None",weight:"Medium",style:"Quick",availability:true},
+  {name:"Noodles & Omelette",category:"Light Meals",taste:"Savory",spice:"Mild",weight:"Light",style:"Quick",availability:true},
+  {name:"Yam Chips",category:"Light Meals",taste:"Savory",spice:"None",weight:"Light",style:"Quick",availability:true},
+  {name:"Pancake",category:"Light Meals",taste:"Sweet",spice:"None",weight:"Light",style:"Quick",availability:true},
+  {name:"Omelette",category:"Light Meals",taste:"Savory",spice:"None",weight:"Light",style:"Quick",availability:true},
+
+  // CONTINENTAL
+  {name:"Chicken Escalope",category:"Continental",taste:"Rich",spice:"None",weight:"Medium",style:"Continental",availability:true},
+  {name:"Mixed Grilled",category:"Continental",taste:"Savory",spice:"Mild",weight:"Heavy",style:"Continental",availability:true},
+  {name:"Seafood Delight",category:"Continental",taste:"Rich",spice:"Mild",weight:"Heavy",style:"Continental",availability:true},
+  {name:"Chicken Cordon Bleu",category:"Continental",taste:"Rich",spice:"None",weight:"Medium",style:"Continental",availability:true},
+  {name:"Silver Gate Signature Platter",category:"Continental",taste:"Rich",spice:"Mild",weight:"Heavy",style:"Continental",availability:true},
+
+  // HEALTHY
+  {name:"All Salads",category:"Healthy",taste:"Light",spice:"None",weight:"Light",style:"Healthy",availability:true},
+  {name:"Fruit Platter",category:"Healthy",taste:"Sweet",spice:"None",weight:"Light",style:"Healthy",availability:true},
+
+  // FINGER FOODS
+  {name:"Finger Platter",category:"Finger Foods",taste:"Savory",spice:"Mild",weight:"Light",style:"Quick",availability:true},
+
+  // NON-ALCOHOLIC DRINKS
+  {name:"Milkshake",category:"Non-Alcoholic Drinks",taste:"Sweet",spice:"None",weight:"Light",style:"Non-Alcoholic",availability:true},
+  {name:"Virgin Mojito",category:"Non-Alcoholic Drinks",taste:"Light",spice:"None",weight:"Light",style:"Non-Alcoholic",availability:true},
+  {name:"Smoothies",category:"Non-Alcoholic Drinks",taste:"Sweet",spice:"None",weight:"Light",style:"Non-Alcoholic",availability:true},
+  {name:"Lemonade",category:"Non-Alcoholic Drinks",taste:"Light",spice:"None",weight:"Light",style:"Non-Alcoholic",availability:true},
+  {name:"Soft Drinks",category:"Non-Alcoholic Drinks",taste:"Sweet",spice:"None",weight:"Light",style:"Non-Alcoholic",availability:true},
+  {name:"Water",category:"Non-Alcoholic Drinks",taste:"Neutral",spice:"None",weight:"Light",style:"Non-Alcoholic",availability:true},
+  {name:"Energy Drinks",category:"Non-Alcoholic Drinks",taste:"Sweet",spice:"None",weight:"Light",style:"Non-Alcoholic",availability:true},
+
+  // ALCOHOLIC DRINKS
+  {name:"Heineken",category:"Alcoholic Drinks",taste:"Savory",spice:"None",weight:"Light",style:"Alcoholic",availability:true},
+  {name:"Gulder",category:"Alcoholic Drinks",taste:"Savory",spice:"None",weight:"Light",style:"Alcoholic",availability:true},
+  {name:"Stout",category:"Alcoholic Drinks",taste:"Rich",spice:"None",weight:"Light",style:"Alcoholic",availability:true},
+  {name:"Desperados",category:"Alcoholic Drinks",taste:"Spicy",spice:"None",weight:"Light",style:"Alcoholic",availability:true},
+  {name:"Smirnoff Ice",category:"Alcoholic Drinks",taste:"Sweet",spice:"None",weight:"Light",style:"Alcoholic",availability:true},
+];
+
+/* ─── SWALLOW → SOUP MAP ────────────────────────────────── */
+const SWALLOW_SOUP_MAP = {
+  "Amala":       ["Ewedu","Efo Riro","Gbegiri"],
+  "Pounded Yam": ["Egusi","Ogbono","Edikaikong","Afang Soup","Oha Soup"],
+  "Eba":         ["Egusi","Okro","Ogbono","Mixed Okro"],
+  "Fufu":        ["Egusi","Afang Soup","Ogbono","Edikaikong"],
+  "Wheat":       ["Egusi","Efo Riro","Oha Soup","Afang Soup"],
+};
+
+/* ─── STATE ─────────────────────────────────────────────── */
+let menu = [];
+let answers = {taste:'',hunger:'',style:'',spice:'',drink:''};
+let guestName = '';
+
+function loadMenu(){
+  const saved = localStorage.getItem('sg_menu');
+  menu = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_MENU));
+}
+function saveMenu(){localStorage.setItem('sg_menu',JSON.stringify(menu));}
+loadMenu();
+
+/* ─── DARK MODE ─────────────────────────────────────────── */
+function initTheme(){
+  const saved = localStorage.getItem('sg_theme') || 'light';
+  document.documentElement.setAttribute('data-theme',saved);
+  document.getElementById('theme-label').textContent = saved === 'dark' ? 'Dark' : 'Light';
+}
+document.getElementById('themeToggle').addEventListener('click',()=>{
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  localStorage.setItem('sg_theme',next);
+  document.getElementById('theme-label').textContent = next === 'dark' ? 'Dark' : 'Light';
+});
+initTheme();
+
+/* ─── PAGE ROUTER ────────────────────────────────────────── */
+function goTo(pageId){
+  const isAdmin = localStorage.getItem('isAdminLoggedIn') === 'true';
+
+  // Block direct navigation to dashboard if not authenticated
+  if(pageId === 'page-dashboard' && !isAdmin){
+    pageId = 'page-admin-login';
+  }
+
+  // Hide ALL pages — remove both .active and .admin-visible from everything
+  document.querySelectorAll('.page').forEach(p=>{
+    p.classList.remove('active');
+    p.classList.remove('admin-visible');
+  });
+
+  // Clear dashboard content whenever we navigate away from it
+  if(pageId !== 'page-dashboard'){
+    clearDashboardContent();
+  }
+
+  const target = document.getElementById(pageId);
+  if(!target) return;
+
+  // Dashboard uses its own show class to bypass the CSS hard-lock
+  if(pageId === 'page-dashboard' && isAdmin){
+    target.classList.add('admin-visible');
+  } else {
+    target.classList.add('active');
+  }
+
+  window.scrollTo(0,0);
+}
+
+/* ─── NAME PAGE ─────────────────────────────────────────── */
+function handleNameContinue(){
+  const val = document.getElementById('guestName').value.trim();
+  if(!val){
+    document.getElementById('guestName').style.borderColor='#EF4444';
+    document.getElementById('guestName').placeholder='Please enter your name…';
+    return;
+  }
+  document.getElementById('guestName').style.borderColor='';
+  guestName = val.split(' ')[0];
+  answers = {taste:'',hunger:'',style:'',spice:'',drink:''};
+  resetQuiz();
+  goTo('page-quiz');
+}
+document.getElementById('guestName').addEventListener('keydown',e=>{if(e.key==='Enter')handleNameContinue();});
+
+/* ─── QUIZ ───────────────────────────────────────────────── */
+let currentStep = 1;
+const TOTAL_STEPS = 5;
+const ANSWER_KEYS = ['taste','hunger','style','spice','drink'];
+
+function resetQuiz(){
+  currentStep = 1;
+  document.querySelectorAll('.quiz-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step-1').classList.add('active');
+  document.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
+  answers = {taste:'',hunger:'',style:'',spice:'',drink:''};
+  updateProgress(1);
+}
+
+function updateProgress(step){
+  const pct = Math.round((step/TOTAL_STEPS)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressLabel').textContent = `Question ${step} of ${TOTAL_STEPS}`;
+  document.getElementById('progressPct').textContent = pct+'%';
+}
+
+function selectOption(el,key,value){
+  const parent = el.closest('.option-grid');
+  parent.querySelectorAll('.option-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[key] = value;
+}
+
+function nextStep(step){
+  const key = ANSWER_KEYS[step-1];
+  if(!answers[key]){
+    const grid = document.querySelector(`#step-${step} .option-grid`);
+    grid.style.outline='2px solid rgba(239,68,68,0.4)';
+    grid.style.borderRadius='12px';
+    setTimeout(()=>{grid.style.outline='';grid.style.borderRadius='';},1000);
+    return;
+  }
+  document.getElementById(`step-${step}`).classList.remove('active');
+  currentStep = step + 1;
+  document.getElementById(`step-${currentStep}`).classList.add('active');
+  updateProgress(currentStep);
+}
+
+function prevStep(step){
+  document.getElementById(`step-${step}`).classList.remove('active');
+  currentStep = step - 1;
+  document.getElementById(`step-${currentStep}`).classList.add('active');
+  updateProgress(currentStep);
+}
+
+/* ─── RECOMMENDATION ENGINE ─────────────────────────────── */
+function scoreItem(item, ans){
+  let score = 0;
+
+  // Taste match
+  const tasteMap = {'Spicy':'Spicy','Rich':'Rich','Light':'Light','Sweet':'Sweet'};
+  if(item.taste === tasteMap[ans.taste]) score += 4;
+  else if(item.taste === 'Savory' && ans.taste === 'Rich') score += 2;
+  else if(item.taste === 'Savory' && ans.taste === 'Light') score += 1;
+
+  // Weight match
+  if(item.weight === ans.hunger) score += 3;
+  else if(
+    (ans.hunger === 'Medium' && (item.weight === 'Light' || item.weight === 'Heavy')) ||
+    (ans.hunger === 'Heavy' && item.weight === 'Medium')
+  ) score += 1;
+
+  // Style match
+  const styleMap = {'Traditional':'Traditional','Continental':'Continental','Quick':'Quick','Healthy':'Healthy'};
+  if(item.style === styleMap[ans.style]) score += 3;
+
+  // Spice match
+  const spiceCompat = {
+    'None': ['None','Mild'],
+    'Mild': ['None','Mild','Medium'],
+    'Hot':  ['Mild','Medium','Hot']
+  };
+  if(spiceCompat[ans.spice] && spiceCompat[ans.spice].includes(item.spice)) score += 2;
+
+  return score;
+}
+
+function pickBest(items){
+  if(!items.length) return null;
+  return items.reduce((best,cur)=>cur._score > best._score ? cur : best, items[0]);
+}
+
+function pickDrink(ans, mealItem){
+  const drinkCat = ans.drink === 'Alcoholic' ? 'Alcoholic Drinks' : 'Non-Alcoholic Drinks';
+  const available = menu.filter(d=>d.category === drinkCat && d.availability);
+  if(!available.length) return null;
+
+  // Pair logic: spicy food → refreshing drink
+  if(ans.drink === 'Non-Alcoholic'){
+    if(ans.taste === 'Spicy' || ans.spice === 'Hot') {
+      const cool = available.find(d=>d.name === 'Virgin Mojito' || d.name === 'Lemonade');
+      if(cool) return cool;
+    }
+    if(ans.taste === 'Sweet') {
+      const sweet = available.find(d=>d.name === 'Smoothies' || d.name === 'Milkshake');
+      if(sweet) return sweet;
+    }
+    return available[Math.floor(Math.random()*available.length)];
+  } else {
+    if(ans.spice === 'Hot') {
+      const lager = available.find(d=>d.name === 'Heineken' || d.name === 'Gulder');
+      if(lager) return lager;
+    }
+    if(ans.taste === 'Sweet') {
+      const sweet = available.find(d=>d.name === 'Smirnoff Ice' || d.name === 'Desperados');
+      if(sweet) return sweet;
+    }
+    return available[Math.floor(Math.random()*available.length)];
+  }
+}
+
+function pickSoup(swallowName){
+  const compatible = SWALLOW_SOUP_MAP[swallowName] || [];
+  for(const soupName of compatible){
+    const found = menu.find(m=>m.name === soupName && m.category === 'Soups' && m.availability);
+    if(found) return found;
+  }
+  // fallback: any available soup
+  const any = menu.filter(m=>m.category === 'Soups' && m.availability);
+  return any.length ? any[0] : null;
+}
+
+function buildWhyText(meal, soup, drink, ans){
+  const name = guestName;
+  let reasons = [];
+  if(ans.taste === 'Spicy') reasons.push('your craving for bold, fiery flavours');
+  else if(ans.taste === 'Rich') reasons.push('your preference for hearty, satisfying dishes');
+  else if(ans.taste === 'Light') reasons.push('your desire for something crisp and light');
+  else if(ans.taste === 'Sweet') reasons.push('your sweet-tooth and comfort-food preference');
+
+  if(ans.hunger === 'Heavy') reasons.push(`a generous ${ans.hunger.toLowerCase()} portion to fill you up`);
+  else if(ans.hunger === 'Light') reasons.push('a lighter meal that won\'t weigh you down');
+
+  if(ans.style === 'Traditional') reasons.push('your love for authentic Nigerian classics');
+  else if(ans.style === 'Continental') reasons.push('your taste for premium continental cuisine');
+  else if(ans.style === 'Healthy') reasons.push('your commitment to a healthy lifestyle');
+  else if(ans.style === 'Quick') reasons.push('your need for something quick yet satisfying');
+
+  const drinkReason = drink ? `, perfectly complemented by a chilled ${drink.name}` : '';
+
+  return `${name}, this selection was curated just for you — balancing ${reasons.join(', ')}${drinkReason}. Our culinary team is confident this combination will deliver an exceptional dining experience at Silvergates.`;
+}
+
+function getRecommendation(){
+  if(!answers.drink){
+    alert('Please select your drink preference.');
+    return;
+  }
+
+  const available = menu.filter(m=>m.availability && !['Non-Alcoholic Drinks','Alcoholic Drinks','Soups','Swallow'].includes(m.category));
+  if(!available.length){
+    alert('Sorry, no menu items are available right now. Please contact our staff.');
+    return;
+  }
+
+  // Apply style filter, avoid swallow in main meal list
+  let pool = available.map(item=>({...item, _score: scoreItem(item,answers)}));
+  pool.sort((a,b)=>b._score-a._score);
+
+  // Pick top 5, then random from them for variety
+  const top5 = pool.slice(0,5);
+  const meal = top5[Math.floor(Math.random()*Math.min(3,top5.length))];
+
+  // Swallow logic
+  let swallow = null, soup = null;
+  if(answers.style === 'Traditional' && answers.hunger === 'Heavy'){
+    const swallowPool = menu.filter(m=>m.category === 'Swallow' && m.availability);
+    if(swallowPool.length){
+      swallow = swallowPool[Math.floor(Math.random()*swallowPool.length)];
+      soup = pickSoup(swallow.name);
+    }
+  }
+
+  const finalMeal = swallow || meal;
+  const drink = pickDrink(answers, finalMeal);
+
+  // Render result
+  document.getElementById('resultName').textContent = guestName;
+
+  document.getElementById('mealName').textContent = finalMeal.name;
+  document.getElementById('mealMeta').innerHTML =
+    `<span class="rc-tag">${finalMeal.category}</span>
+     <span class="rc-tag gold">${finalMeal.taste}</span>
+     <span class="rc-tag">${finalMeal.weight} Portion</span>`;
+
+  if(soup){
+    document.getElementById('cardSoup').classList.remove('hidden');
+    document.getElementById('soupName').textContent = soup.name;
+    document.getElementById('soupMeta').innerHTML =
+      `<span class="rc-tag gold">${soup.category}</span><span class="rc-tag">${soup.taste}</span>`;
+  } else {
+    document.getElementById('cardSoup').classList.add('hidden');
+  }
+
+  if(drink){
+    document.getElementById('drinkName').textContent = drink.name;
+    document.getElementById('drinkMeta').innerHTML =
+      `<span class="rc-tag green">${drink.category}</span><span class="rc-tag">${answers.drink}</span>`;
+  } else {
+    document.getElementById('drinkName').textContent = 'Ask our staff for today\'s selection';
+    document.getElementById('drinkMeta').innerHTML = '';
+  }
+
+  const displayMeal = swallow ? (swallow.name + (soup ? ' + ' + soup.name : '')) : meal.name;
+  document.getElementById('whyText').textContent = buildWhyText(finalMeal, soup, drink, answers);
+
+  goTo('page-result');
+}
+
+function tryAgain(){
+  answers = {taste:'',hunger:'',style:'',spice:'',drink:''};
+  resetQuiz();
+  goTo('page-quiz');
+}
+
+/* ─── ADMIN AUTH ─────────────────────────────────────────── */
+const ADMIN_USER = 'info@silvergatehotel.com';
+const ADMIN_PASS = 'Gat35ilva@1';
+
+/* Clear all dashboard content so nothing leaks into the DOM */
+function clearDashboardContent(){
+  const statsEl = document.getElementById('dashStats');
+  const tbodyEl = document.getElementById('menuTableBody');
+  if(statsEl) statsEl.innerHTML = '';
+  if(tbodyEl) tbodyEl.innerHTML = '';
+}
+
+function handleAdminLogin(){
+  const u = document.getElementById('adminUser').value.trim();
+  const p = document.getElementById('adminPass').value;
+  const err = document.getElementById('loginError');
+  if(u === ADMIN_USER && p === ADMIN_PASS){
+    err.style.display='none';
+    localStorage.setItem('isAdminLoggedIn','true');
+    renderDashboard();
+    goTo('page-dashboard');
+  } else {
+    err.style.display='block';
+  }
+}
+
+document.getElementById('adminPass').addEventListener('keydown',e=>{if(e.key==='Enter')handleAdminLogin();});
+
+function handleLogout(){
+  localStorage.removeItem('isAdminLoggedIn');
+  clearDashboardContent();
+  document.getElementById('adminUser').value='';
+  document.getElementById('adminPass').value='';
+  goTo('page-landing');
+}
+
+/* On every page load: enforce auth. If dashboard was somehow left active, redirect. */
+(function enforceAuthOnLoad(){
+  const isAdmin = localStorage.getItem('isAdminLoggedIn') === 'true';
+  const dash = document.getElementById('page-dashboard');
+  // Always strip dashboard classes on load regardless
+  if(dash){
+    dash.classList.remove('active');
+    dash.classList.remove('admin-visible');
+  }
+  // Clear any stale dashboard content in the DOM
+  if(!isAdmin){
+    clearDashboardContent();
+  }
+  // Ensure landing page is visible (it has .active in HTML; just confirm)
+  // No page change needed — HTML default is page-landing.active
+})();
+
+/* ─── DASHBOARD ──────────────────────────────────────────── */
+function renderDashboard(){
+  /* Safety guard: never render dashboard content unless authenticated */
+  if(localStorage.getItem('isAdminLoggedIn') !== 'true') return;
+  renderStats();
+  renderTable();
+}
+
+function renderStats(){
+  const total = menu.length;
+  const avail = menu.filter(m=>m.availability).length;
+  const unavail = total - avail;
+  const cats = [...new Set(menu.map(m=>m.category))].length;
+  document.getElementById('dashStats').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Total Items</div>
+      <div class="stat-value">${total}</div>
+      <div class="stat-sub">Menu items</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Available</div>
+      <div class="stat-value" style="color:#10B981">${avail}</div>
+      <div class="stat-sub">Currently on menu</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Unavailable</div>
+      <div class="stat-value" style="color:#EF4444">${unavail}</div>
+      <div class="stat-sub">Temporarily off</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Categories</div>
+      <div class="stat-value">${cats}</div>
+      <div class="stat-sub">Menu sections</div>
+    </div>
+  `;
+}
+
+function renderTable(){
+  const catF = document.getElementById('catFilter').value;
+  const availF = document.getElementById('availFilter').value;
+  const searchF = document.getElementById('dashSearch').value.toLowerCase();
+
+  let filtered = menu.filter(item=>{
+    if(catF && item.category !== catF) return false;
+    if(availF !== '' && String(item.availability) !== availF) return false;
+    if(searchF && !item.name.toLowerCase().includes(searchF) && !item.category.toLowerCase().includes(searchF)) return false;
+    return true;
+  });
+
+  const tbody = document.getElementById('menuTableBody');
+  if(!filtered.length){
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:32px;">No items match your filters.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((item,idx)=>{
+    const realIdx = menu.indexOf(item);
+    return `
+    <tr>
+      <td style="color:var(--text-muted);font-size:0.78rem;">${idx+1}</td>
+      <td style="font-weight:500;">${item.name}</td>
+      <td><span class="cat-badge">${item.category}</span></td>
+      <td>${item.taste}</td>
+      <td>${item.spice}</td>
+      <td>${item.weight}</td>
+      <td>${item.style}</td>
+      <td>
+        <button class="avail-toggle ${item.availability?'on':'off'}"
+          onclick="toggleAvailability(${realIdx})"
+          title="${item.availability?'Mark Unavailable':'Mark Available'}">
+        </button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function toggleAvailability(idx){
+  menu[idx].availability = !menu[idx].availability;
+  saveMenu();
+  renderStats();
+  renderTable();
+}
+
+function addMenuItem(){
+  const name = document.getElementById('newName').value.trim();
+  const cat  = document.getElementById('newCategory').value;
+  if(!name || !cat){
+    alert('Please fill in at least the item name and category.');
+    return;
+  }
+  menu.push({
+    name,
+    category:cat,
+    taste:document.getElementById('newTaste').value,
+    spice:document.getElementById('newSpice').value,
+    weight:document.getElementById('newWeight').value,
+    style:document.getElementById('newStyle').value,
+    availability:true
+  });
+  saveMenu();
+  document.getElementById('newName').value='';
+  document.getElementById('newCategory').value='';
+  document.getElementById('addModal').classList.remove('open');
+  renderDashboard();
+}
+
+/* ─── CLOSE MODALS ON OVERLAY CLICK ─────────────────────── */
+document.getElementById('waiterModal').addEventListener('click',function(e){
+  if(e.target===this) this.classList.remove('open');
+});
+document.getElementById('addModal').addEventListener('click',function(e){
+  if(e.target===this) this.classList.remove('open');
+});
+</script>
+</body>
+</html>
